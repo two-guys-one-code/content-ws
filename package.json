@@ -1,0 +1,11 @@
+{
+  "name": "hashtag-project",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "~1.4.2",
+    "express": "~4.5.1",
+    "method-override": "~2.0.2",
+    "mysql": "^2.5.4",
+    "sequelize": "^3.5.1"
+  }
+}
