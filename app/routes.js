@@ -1,12 +1,10 @@
 var DataTypes = require('sequelize');
-module.exports = function(app, sequelize) {
+module.exports = function(router, sequelize) {
 
-    app.post('/signup', function(req, res){
+    router.post('/signup', function(req, res){
       var uuid = require('node-uuid');
-
-      console.log(req.body);
-
       var User = require('./models/user')(sequelize, DataTypes);
+
       sequelize.sync().then(function() {
         return User.create({
           id: uuid.v4(),
@@ -14,14 +12,13 @@ module.exports = function(app, sequelize) {
           email: req.body.email,
           password: req.body.password
         });
-      }).then(function(jane) {
-        console.log(jane.get('name'))
-        res.sendfile('./public/views/index.html');
+      }).then(function(user) {
+        res.json({success: true, message: 'User Created.'});
       });
 
     });
 
-    app.get('*', function(req, res) {
+    router.get('*', function(req, res) {
         res.sendfile('./public/views/index.html'); // load our public/index.html file
     });
 
