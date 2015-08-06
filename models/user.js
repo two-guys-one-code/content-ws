@@ -5,7 +5,8 @@ module.exports = function(sequelize) {
     name: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
-    profile_id: DataTypes.INTEGER
+    profile_id: DataTypes.INTEGER,
+    access_token: DataTypes.STRING
   }, {
     tableName: 'user',
     timestamps: false,

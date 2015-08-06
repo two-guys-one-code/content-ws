@@ -8,6 +8,7 @@
     "method-override": "~2.0.2",
     "mysql": "^2.5.4",
     "sequelize": "^3.5.1",
-    "node-uuid": "^1.4.0"
+    "node-uuid": "^1.4.0",
+    "jsonwebtoken" : "^5.0.4"
   }
 }
