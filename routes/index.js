@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var Sequelize = require('sequelize');
-var sequelize = new Sequelize('content_app', 'root', '', {
-// var sequelize = new Sequelize('content_app', 'root', 'root', {
+//var sequelize = new Sequelize('content_app', 'root', '', {
+var sequelize = new Sequelize('content_app', 'root', 'root', {
   host: 'localhost',
-  // port: '/Applications/MAMP/tmp/mysql/mysql.sock',
-  port:3306,
+  port: '/Applications/MAMP/tmp/mysql/mysql.sock',
+  //port:3306,
   dialect: 'mysql',
   pool: {
     max: 5,

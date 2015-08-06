@@ -1,4 +1,5 @@
-module.exports = function(sequelize, DataTypes) {
+module.exports = function(sequelize) {
+  var DataTypes = require('sequelize');
   var Content = sequelize.define("Content", {
     id: DataTypes.INTEGER,
     title: DataTypes.STRING,
