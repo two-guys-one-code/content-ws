@@ -22,12 +22,9 @@ module.exports = function(sequelize) {
       validate: {
         isEmail: { msg: 'Invalid email.'},
         isUnique: function (email, done) {
-            User.find({ where: { email: email }}).done(function (user, email) {
+            User.find({ where: { email: email }}).done(function (user) {
                     if (user) {
                         done(new Error('Email already in use.'));
-                    }
-                    if (email) {
-                        done(new Error('Email already in use'));
                     }
                     done();
             });
@@ -40,7 +37,7 @@ module.exports = function(sequelize) {
       validate: {
         notEmpty: { msg: 'Invalid password.'},
         len: {
-          args: [6,20],
+          args: [6,100],
           msg: 'Password must contain between 6 and 20 characteres.'
         }
       }
