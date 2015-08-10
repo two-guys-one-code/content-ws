@@ -7,8 +7,11 @@ var port = process.env.PORT || 8080;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+//set up models
+app.set('models', require('./models'));
+
 //routes
-var router = require('./routes');
+var router = require('./routes')(app);
 app.use('/api', router);
 
 app.listen(port);
