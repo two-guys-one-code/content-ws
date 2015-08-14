@@ -6,7 +6,6 @@ module.exports = function(app) {
        var user = createUser(req);
 
        //TODO validar password
-
        UserModel.create(user).then(function(user) {
          res.json({success: true, message: 'User created.'});
        }).catch(function(err) {
@@ -24,7 +23,7 @@ module.exports = function(app) {
              var crypt = require('bcrypt');
 
              if(crypt.compareSync(req.body.password, user.password)) {
-                user.access_token = createToken(user.email);
+                user.access_token = require('Utils').createToken(user.email);
                 updateUserTokenAndThenLogin(user, res);
              } else {
                 res.json({success: false, message: 'Email or password is incorrect.'});
@@ -40,8 +39,10 @@ module.exports = function(app) {
           var UserModel = app.get('models').User;
 
           UserModel.findOne({where: { email: req.body.email }}).then(function(user) {
+            var transporter = require('../mail');
+
             if(user)
-              sendEmail(user.email, function(sent){
+              transporter.sendForgotPasswordEmail(user.email, function(sent){
                 if(!sent)
                   res.json({success: false, message: 'Failed to send email.'});
               });
@@ -52,21 +53,12 @@ module.exports = function(app) {
    };
 
    externalRoutes.changepassword = function(req, res) {
-     console.log(req);
      var jwt = require('jsonwebtoken')
      var decoded = jwt.verify(req.params.token, require('../secret'), function(err, decoded) {
        if (err) {
-         /*
-           err = {
-             name: 'TokenExpiredError',
-             message: 'jwt expired',
-             expiredAt: 1408621000
-           }
-        */
+         res.json({success: false, message: 'Token expired.'});
       } else {
-
          //TODO validar password e cryptografar
-
          var UserModel = app.get('models').User;
          user.update({password: user.password}, {where: {email:decoded}}).then(function(updated){
            if(updated){
@@ -87,35 +79,6 @@ module.exports = function(app) {
 };
 
 //Helper Methods
-var sendEmail = function(email, callback) {
-  var nodemailer = require('nodemailer');
-
-  // create reusable transporter object using SMTP transport
-  var transporter = nodemailer.createTransport({
-      service: 'Gmail',
-      auth: {
-          user: 'email',
-          pass: 'userpass'
-      }
-  });
-
-  var mailOptions = {
-      from: 'Two Guys One Code <twoguysonecode@gmail.com>', // sender address
-      to: email, // list of receivers
-      subject: 'Hello', // Subject line
-      text: 'Hello world', // plaintext body
-      html: 'http://localhost:8080/api/changepassword/'+createToken(email) // html body
-  };
-
-  transporter.sendMail(mailOptions, function(error, info){
-      if(error){
-          callback(false);
-      }else{
-          callback(true);
-      }
-  });
-}
-
 var isValidCredentials = function(req,res) {
     if(req.body.password == '' || req.body.email == '') {
         res.json({success: false, message: 'Invalid credentials.'});
@@ -132,13 +95,6 @@ var isValidEmail = function(req) {
     return false;
 
   return validator.isEmail(req.body.email);
-}
-
-var createToken = function(email) {
-   var jwt = require('jsonwebtoken');
-   return jwt.sign(email, require('../secret'), {
-      expiresInMinutes: 1440
-    });
 }
 
 var createUser = function(req) {
