@@ -29,6 +29,8 @@ var models = [
   'Content',
 ];
 
+// sequelize.sync({force:true});
+
 models.forEach(function(model) {
   module.exports[model] = sequelize.import(__dirname + '/' + model);
 });

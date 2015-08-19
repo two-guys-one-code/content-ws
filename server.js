@@ -10,6 +10,8 @@ app.use(bodyParser.json());
 //set up models
 app.set('models', require('./models'));
 
+app.use(express.static(__dirname + '/public'));
+
 //routes
 var router = require('./routes')(app);
 app.use('/api', router);
