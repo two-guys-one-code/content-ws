@@ -3,6 +3,15 @@ module.exports = function(sequelize) {
   var User = sequelize.define("User", {
     id: {
       type: DataTypes.STRING,
+      primaryKey: true,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+        isUUID: 4
+      }
+    },
+    secret: {
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
@@ -49,12 +58,13 @@ module.exports = function(sequelize) {
       type: DataTypes.STRING
     }
   }, {
-    tableName: 'user',
+    //tableName: 'user',
     timestamps: false,
     instanceMethods: {
       toJSON: function () {
         var result = this.get({plain:true});
         delete result['password'];
+        delete result['secret'];
         return result;
       }
     }

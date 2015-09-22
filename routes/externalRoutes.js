@@ -13,6 +13,7 @@ module.exports = function(app) {
          id: uuid.v4(),
          name: req.body.name,
          email: req.body.email,
+         secret: uuid.v4(),
          password: crypt.hashSync(req.body.password, crypt.genSaltSync(10))
        }).then(function(user) {
          res.json({success: true, message: 'User created.'});
@@ -29,13 +30,14 @@ module.exports = function(app) {
                 return;
              }
 
-             user.access_token = require('../Utils').createToken(user.email);
+             user.access_token = require('../Utils').createTokenUser(user);
              updateUserTokenAndThenLogin(user, res);
+           }
         });
    };
 
    externalRoutes.forgotpassword = function(req, res) {
-        if(isValidEmail(req)) {
+        if(!isValidEmail(req)) {
           res.json({success: false, message: 'Failed to send email.'});
           return;
         }
@@ -67,9 +69,15 @@ module.exports = function(app) {
           }
 
           new_password = crypt.hashSync(new_password, crypt.genSaltSync(10));
-          UserModel.update({password: new_password}, {where: {email:email}}).then(function(updated){
+
+          UserModel.update({password: new_password, secret: uuid.v4()}, {where: {email:email}}).then(function(updated){
              if(updated){
-               res.json({success: true, message: 'Success.'});
+               mailTransporter.confirmPasswordChangedEmail(email, function(sent){
+                 if(!sent)
+                   res.json({success: false, message: 'Success. Failed to send mail.'});
+                 else
+                   res.json({success: true, message: 'Success.'});
+               });
              } else {
                res.json({success: false, message: 'An error occurred. Try again later.'});
              }

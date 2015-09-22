@@ -12,9 +12,13 @@ app.set('models', require('./models'));
 
 app.use(express.static(__dirname + '/public'));
 
+//middleware
+var middleware = require('./validateRequest')(app);
+app.all('/api/*', middleware);
+
 //routes
 var router = require('./routes')(app);
-app.use('/api', router);
+app.use('/', router);
 
 app.listen(port);
 

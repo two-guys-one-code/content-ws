@@ -2,11 +2,11 @@ var Sequelize = require('sequelize');
 var config    = {
   name: 'content_app',
   username: 'root',
-  password: '', //'root',
+  password: 'root', //'root',
   options: {
   host: 'localhost',
-  port:3306,
-  //port: '/Applications/MAMP/tmp/mysql/mysql.sock',
+  //port:3306,
+  port: '/Applications/MAMP/tmp/mysql/mysql.sock',
   dialect: 'mysql',
   pool: {
     max: 5,
@@ -29,7 +29,7 @@ var models = [
   'Content',
 ];
 
-// sequelize.sync({force:true});
+sequelize.sync();
 
 models.forEach(function(model) {
   module.exports[model] = sequelize.import(__dirname + '/' + model);
