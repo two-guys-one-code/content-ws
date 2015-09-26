@@ -4,6 +4,7 @@ module.exports = function (app, router) {
 
   var externalRoutes = require('./externalRoutes')(app);
   var content = require('./content')(app);
+  var tag = require('./tag')(app);
 
   //external routes
   router.post('/signup', externalRoutes.signup);
@@ -19,6 +20,12 @@ module.exports = function (app, router) {
   router.get('/api/content/:id', content.getContent);
   router.put('/api/content/:id', content.updateContent);
   router.delete('/api/content/:id', content.deleteContent);
+
+  //tags routes
+  router.post('/api/tag', tag.addNewTag);
+  router.get('/api/tags', tag.findAllTags);
+  router.get('/api/content/:id/tags', tag.findTagsByContent);
+  router.put('/api/content/:id/tags', tag.updateTags);
 
   //error 404 if nothing else runs.
   router.get('*', function(req, res, next) {

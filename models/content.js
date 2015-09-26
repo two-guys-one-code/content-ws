@@ -26,13 +26,8 @@ module.exports = function(sequelize) {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    author_id: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-        isUUID: 4
-      }
+    authorId: {
+      type: DataTypes.STRING
     },
     created_at: DataTypes.DATE
   }, {

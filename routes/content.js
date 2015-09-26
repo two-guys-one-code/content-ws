@@ -14,7 +14,7 @@ module.exports = function(app) {
 
   content.getContentsFromUser = function(req, res) {
     ContentModel.findAll({
-       where: {author_id: req.params.id}
+       where: {authorId: req.params.id}
     }).then(function(contents){
        res.json({success: true, contents: contents});
     });
@@ -31,16 +31,30 @@ module.exports = function(app) {
   };
 
   content.createContent = function(req, res) {
+    var tags = req.body.tags;
+
     ContentModel.create({
       id: uuid.v4(),
       title: req.body.title,
       content: req.body.content,
       image: req.body.image,
-      author_id: req.user.id
+      authorId: req.user.id
     }).then(function(content) {
-      res.json({success: true, message: 'Content created.', content: content});
+      if(tags != null) {
+        for(var i=0; i<tags.length;i++) {
+          TagModel.findOrCreate({where: {name: tags[i]}}).then(function(tag){
+            content.addTask(tag).catch(function(err){
+                res.json({success: false, message: err});
+            });
+          }).catch(function(err){
+              res.json({success: false, message: err});
+          });
+        }
+      }
+
+      res.json({success: true, message: 'Content created.', id: content});
     }).catch(function(err) {
-      res.json({success: false, message: err.errors[0].message});
+      res.json({success: false, message: err});
     });
   };
 
