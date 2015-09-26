@@ -40,17 +40,17 @@ module.exports = function(app) {
       image: req.body.image,
       authorId: req.user.id
     }).then(function(content) {
-      if(tags != null) {
-        for(var i=0; i<tags.length;i++) {
-          TagModel.findOrCreate({where: {name: tags[i]}}).then(function(tag){
-            content.addTask(tag).catch(function(err){
-                res.json({success: false, message: err});
-            });
-          }).catch(function(err){
-              res.json({success: false, message: err});
-          });
-        }
-      }
+      // if(tags != null) {
+      //   for(var i=0; i<tags.length;i++) {
+      //     TagModel.findOrCreate({where: {name: tags[i]}}).then(function(tag){
+      //       content.addTask(tag).catch(function(err){
+      //           res.json({success: false, message: err});
+      //       });
+      //     }).catch(function(err){
+      //         res.json({success: false, message: err});
+      //     });
+      //   }
+      // }
 
       res.json({success: true, message: 'Content created.', id: content});
     }).catch(function(err) {

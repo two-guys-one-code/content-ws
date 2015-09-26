@@ -4,6 +4,18 @@ module.exports = function(app) {
 
   var tag = {};
 
+  tag.addTagToContent = function(req, res) {
+    ContentModel.findOne({
+      where: {id: req.params.id}
+    }).then(function(content){
+      TagModel.findOrCreate({where: {name: req.body.name} }).then(function(tag){
+        content.addTag(tag).then(function(tag){
+          res.json({success: true, message: 'tag added to content.'});
+        });
+      });
+    });
+  };
+
   tag.addNewTag = function(req,res) {
     TagModel.create({
         name: req.body.name
@@ -47,12 +59,10 @@ module.exports = function(app) {
             where: {name: tags[i].name}
           }).then(function(tag){
             content.addTag(tag).then(function(tag){
-               console.log(tag);
+              res.json({success: true, tag: tag});
             });
           });
         };
-
-        res.json({success: true, message: 'tags updated.'});
       });
     });
   };

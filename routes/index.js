@@ -24,6 +24,7 @@ module.exports = function (app, router) {
   //tags routes
   router.post('/api/tag', tag.addNewTag);
   router.get('/api/tags', tag.findAllTags);
+  router.post('/api/content/:id/tag', tag.addTagToContent);
   router.get('/api/content/:id/tags', tag.findTagsByContent);
   router.put('/api/content/:id/tags', tag.updateTags);
 
