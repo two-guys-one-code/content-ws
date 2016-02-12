@@ -2,7 +2,8 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
-var port = process.env.PORT || 8080;
+var port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+var address = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -20,7 +21,7 @@ app.all('/api/*', middleware);
 var router = require('./routes')(app);
 app.use('/', router);
 
-app.listen(port);
+app.listen(port, address);
 
 console.log('running at port: ' + port);
 exports = module.exports = app;
