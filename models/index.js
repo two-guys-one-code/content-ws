@@ -1,11 +1,11 @@
 var Sequelize = require('sequelize');
 var config    = {
-  name: 'content_app',
-  username: 'root',
-  password: '',
+  name: 'contentapp',
+  username: 'contentapp',
+  password: 'Vr1eAw~!bw2v',
   //password: 'root',
   options: {
-  host: 'localhost',
+  host: 'mysql2.gear.host',
   port:3307,
   //port: '/Applications/MAMP/tmp/mysql/mysql.sock',
   dialect: 'mysql',
