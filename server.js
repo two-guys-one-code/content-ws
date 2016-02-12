@@ -1,9 +1,10 @@
+var cc = require('config-multipaas')
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
-var port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
-var address = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
+var port = config.get('PORT');
+var address = config.get('IP');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
