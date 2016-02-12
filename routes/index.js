@@ -7,6 +7,7 @@ module.exports = function (app, router) {
   var tag = require('./tag')(app);
 
   //external routes
+  router.get('/teste', externalRoutes.teste);
   router.post('/signup', externalRoutes.signup);
   router.post('/login', externalRoutes.login);
   router.post('/forgotpassword', externalRoutes.forgotpassword);
