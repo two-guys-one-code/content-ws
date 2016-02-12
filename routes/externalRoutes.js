@@ -6,6 +6,10 @@ module.exports = function(app) {
    var mailTransporter = require('../mail');
 
    var externalRoutes = {};
+   
+   externalRoutes.teste = function(req,res) {
+      res.json({sucess: true, message:'teste'}); 
+   };
 
    externalRoutes.signup = function(req, res) {
        //TODO validar password
