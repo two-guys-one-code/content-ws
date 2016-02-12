@@ -1,6 +1,5 @@
 {
   "name": "content-app",
-  "main": "server.js",
   "version": "0.1.0",
   "dependencies": {
     "body-parser": "~1.4.2",
@@ -13,5 +12,9 @@
     "bcrypt" : "^0.8.4",
     "nodemailer" : "^1.0",
     "validator" : "^4.0.2"
+  },
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
   }
 }
